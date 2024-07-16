@@ -1,0 +1,15 @@
+{
+  "languages": {
+    "PHP": {
+      "formatter": {
+        "external": {
+          "command": "bash",
+          "arguments": [
+            "-c",
+            "temp=$(mktemp) && cat > $temp && ./vendor/bin/pint --quiet $temp && cat $temp"
+          ]
+        }
+      }
+    }
+  }
+}
