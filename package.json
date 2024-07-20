@@ -5,7 +5,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "format:php": "./vendor/bin/pint",
-    "format:resources": "npx prettier --write resources/"
+    "format:resources": "npx prettier --write resources/",
+    "check:format:resources": "npx prettier --check resources/"
   },
   "devDependencies": {
     "@headlessui/react": "^2.0.0",
