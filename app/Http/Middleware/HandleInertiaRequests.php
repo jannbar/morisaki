@@ -40,7 +40,8 @@ class HandleInertiaRequests extends Middleware
                 'role' => $request->user()?->roles->pluck('name')[0],
                 'permissions' => [
                     'user' => [
-                        UserPolicy::ADMINISTER => $request->user()?->can(UserPolicy::ADMINISTER, User::class),
+                        UserPolicy::ADMINISTER_STAFF => $request->user()?->can(UserPolicy::ADMINISTER_STAFF, User::class),
+                        UserPolicy::ADMINISTER_MEMBERS => $request->user()?->can(UserPolicy::ADMINISTER_MEMBERS, User::class),
                         UserPolicy::DELETE_SELF => $request->user()?->can(UserPolicy::DELETE_SELF, User::class),
                     ],
                     'book' => [

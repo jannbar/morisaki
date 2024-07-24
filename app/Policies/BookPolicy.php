@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\PermissionsEnum;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -20,7 +21,7 @@ class BookPolicy
      */
     public function administer(User $user): bool
     {
-        return $user->can(['create books', 'update books', 'delete books', 'administer borrowed books']);
+        return $user->can(PermissionsEnum::ADMINISTER_BOOKS->value);
     }
 
     /**
@@ -28,7 +29,7 @@ class BookPolicy
      */
     public function borrow(User $user): bool
     {
-        return $user->can('borrow books');
+        return $user->can(PermissionsEnum::BORROW_BOOKS->value);
     }
 
     /**

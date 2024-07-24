@@ -2,23 +2,35 @@
 
 namespace App\Policies;
 
+use App\Enums\PermissionsEnum;
+use App\Enums\RolesEnum;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy
 {
-    public const ADMINISTER = 'administer';
+    public const ADMINISTER_STAFF = 'administerStaff';
+
+    public const ADMINISTER_MEMBERS = 'administerMembers';
 
     public const DELETE_SELF = 'deleteSelf';
 
     use HandlesAuthorization;
 
     /**
-     * Determine whether the current user can administer users.
+     * Determine whether the current user can administer staff.
      */
-    public function administer(User $user): bool
+    public function administerStaff(User $user): bool
     {
-        return $user->can('administer users');
+        return $user->can(PermissionsEnum::ADMINISTER_STAFF->value);
+    }
+
+    /**
+     * Determine whether the current user can administer members.
+     */
+    public function administerMembers(User $user): bool
+    {
+        return $user->can(PermissionsEnum::ADMINISTER_MEMBERS->value);
     }
 
     /**
@@ -26,6 +38,6 @@ class UserPolicy
      */
     public function deleteSelf(User $user): bool
     {
-        return $user->hasRole('member');
+        return $user->hasRole(RolesEnum::MEMBER);
     }
 }

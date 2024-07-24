@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Enums\PermissionsEnum;
+use App\Enums\RolesEnum;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -18,26 +20,19 @@ class PermissionsSeeder extends Seeder
         // Reset cached roles and permissions.
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // TODO: Refactor permissions/roles to enums!
-
         // Create permissions.
-        Permission::create(['name' => 'create books']);
-        Permission::create(['name' => 'update books']);
-        Permission::create(['name' => 'delete books']);
-
-        Permission::create(['name' => 'borrow books']);
-        Permission::create(['name' => 'administer borrowed books']);
-
-        Permission::create(['name' => 'administer users']);
+        foreach (PermissionsEnum::cases() as $permission) {
+            Permission::create(['name' => $permission]);
+        }
 
         // Create roles and assign permissions.
-        $librarian = Role::create(['name' => 'librarian']);
-        $librarian->givePermissionTo(['create books', 'update books', 'delete books', 'administer borrowed books']);
+        $super_admin = Role::create(['name' => RolesEnum::SUPER_ADMIN->value]);
 
-        $member = Role::create(['name' => 'member']);
-        $member->givePermissionTo(['borrow books']);
+        $librarian = Role::create(['name' => RolesEnum::LIBRARIAN->value]);
+        $librarian->givePermissionTo([PermissionsEnum::ADMINISTER_BOOKS, PermissionsEnum::ADMINISTER_MEMBERS]);
 
-        $super_admin = Role::create(['name' => 'super-admin']);
+        $member = Role::create(['name' => RolesEnum::MEMBER->value]);
+        $member->givePermissionTo(PermissionsEnum::BORROW_BOOKS);
 
         // Create demo users.
         $faker = $this->getFakerInstance();
@@ -46,19 +41,19 @@ class PermissionsSeeder extends Seeder
             'name' => $faker->name(),
             'email' => 'librarian@morisaki.com',
         ]);
-        $librarian_user->assignRole($librarian);
+        $librarian_user->assignRole(RolesEnum::LIBRARIAN);
 
         $member_user = User::factory()->create([
             'name' => $faker->name(),
             'email' => 'member@morisaki.com',
         ]);
-        $member_user->assignRole($member);
+        $member_user->assignRole(RolesEnum::MEMBER);
 
         $super_admin_user = User::factory()->create([
             'name' => $faker->name(),
             'email' => 'super-admin@morisaki.com',
         ]);
-        $super_admin_user->assignRole($super_admin);
+        $super_admin_user->assignRole(RolesEnum::SUPER_ADMIN);
     }
 
     private function getFakerInstance(): \Faker\Generator
