@@ -48,8 +48,8 @@ export default function Authenticated({
 
                 {can('view', permissions.book) ? (
                   <NavLink
-                    href={route('users.index')}
-                    active={route().current('users.*')}
+                    href={route('books.index')}
+                    active={route().current('books.*')}
                   >
                     Books
                   </NavLink>

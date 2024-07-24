@@ -3,16 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Policies\BookPolicy;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class BookController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Response
     {
-        //
+        Gate::authorize(BookPolicy::VIEW, Book::class);
+
+        return Inertia::render('Books/Index', [
+            'books' => Book::all(),
+        ]);
     }
 
     /**
