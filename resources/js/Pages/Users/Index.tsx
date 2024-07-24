@@ -2,15 +2,13 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head } from '@inertiajs/react'
 import { PageProps } from '@/types'
 
-export default function Dashboard({ auth }: PageProps) {
-  console.log({ auth })
-
+export default function Index({ auth, users }: PageProps) {
   return (
     <AuthenticatedLayout
       user={auth.user}
       header={
         <h2 className="text-xl font-semibold leading-tight text-gray-800">
-          Dashboard
+          Users
         </h2>
       }
     >
@@ -20,10 +18,7 @@ export default function Dashboard({ auth }: PageProps) {
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
             <div className="p-6 text-gray-900">
-              <span className="mb-4 inline-block rounded bg-gray-100 px-2 py-1 font-mono text-xs font-medium">
-                {auth.role}
-              </span>
-              <p>Welcome back, {auth.user.name}</p>
+              <pre>{JSON.stringify(users, null, 2)}</pre>
             </div>
           </div>
         </div>

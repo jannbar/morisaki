@@ -4,12 +4,15 @@ import UpdatePasswordForm from './Partials/UpdatePasswordForm'
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm'
 import { Head } from '@inertiajs/react'
 import { PageProps } from '@/types'
+import { usePermissions } from '@/util/usePermissions'
 
 export default function Edit({
   auth,
   mustVerifyEmail,
   status,
 }: PageProps<{ mustVerifyEmail: boolean; status?: string }>) {
+  const { permissions, can } = usePermissions()
+
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -35,7 +38,7 @@ export default function Edit({
             <UpdatePasswordForm className="max-w-xl" />
           </div>
 
-          {auth.role === 'member' ? (
+          {can('deleteSelf', permissions.user) ? (
             <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8">
               <DeleteUserForm className="max-w-xl" />
             </div>

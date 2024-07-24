@@ -1,11 +1,20 @@
-import { Link, InertiaLinkProps } from '@inertiajs/react'
+import { usePermissions } from '@/util/usePermissions'
+import { Link, InertiaLinkProps, usePage } from '@inertiajs/react'
 
 export default function NavLink({
   active = false,
   className = '',
   children,
+  visibleFor,
   ...props
-}: InertiaLinkProps & { active: boolean }) {
+}: InertiaLinkProps & { active: boolean; visibleFor?: string }) {
+  // const { can } = usePermissions()
+
+  // TODO: Do I need this when using Model Policies?
+  // if (visibleFor && !can(visibleFor)) {
+  //   return null
+  // }
+
   return (
     <Link
       {...props}

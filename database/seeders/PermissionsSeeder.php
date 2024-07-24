@@ -26,17 +26,18 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'delete books']);
 
         Permission::create(['name' => 'borrow books']);
-        Permission::create(['name' => 'manage borrowed books']);
+        Permission::create(['name' => 'administer borrowed books']);
+
+        Permission::create(['name' => 'administer users']);
 
         // Create roles and assign permissions.
         $librarian = Role::create(['name' => 'librarian']);
-        $librarian->givePermissionTo(['create books', 'update books', 'delete books', 'manage borrowed books']);
+        $librarian->givePermissionTo(['create books', 'update books', 'delete books', 'administer borrowed books']);
 
         $member = Role::create(['name' => 'member']);
         $member->givePermissionTo(['borrow books']);
 
         $super_admin = Role::create(['name' => 'super-admin']);
-        $super_admin->givePermissionTo(Permission::all());
 
         // Create demo users.
         $faker = $this->getFakerInstance();

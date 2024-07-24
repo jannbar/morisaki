@@ -5,19 +5,17 @@ import NavLink from '@/Components/NavLink'
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink'
 import { Link } from '@inertiajs/react'
 import { User } from '@/types'
-
-function makeFirstLetterUppercase(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1)
-}
+import { usePermissions } from '@/util/usePermissions'
 
 export default function Authenticated({
   user,
-  role,
   header,
   children,
-}: PropsWithChildren<{ user: User; role?: string; header?: ReactNode }>) {
+}: PropsWithChildren<{ user: User; header?: ReactNode }>) {
   const [showingNavigationDropdown, setShowingNavigationDropdown] =
     useState(false)
+
+  const { permissions, can } = usePermissions()
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -29,11 +27,6 @@ export default function Authenticated({
                 <Link href="/">
                   <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
                 </Link>
-                {role && (
-                  <span className="ml-3 rounded-md bg-rose-50 px-2 py-1 text-sm font-medium text-rose-900">
-                    {makeFirstLetterUppercase(role)}
-                  </span>
-                )}
               </div>
 
               <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
@@ -43,6 +36,24 @@ export default function Authenticated({
                 >
                   Dashboard
                 </NavLink>
+
+                {can('administer', permissions.user) ? (
+                  <NavLink
+                    href={route('users.index')}
+                    active={route().current('users.*')}
+                  >
+                    Users
+                  </NavLink>
+                ) : null}
+
+                {can('view', permissions.book) ? (
+                  <NavLink
+                    href={route('users.index')}
+                    active={route().current('users.*')}
+                  >
+                    Books
+                  </NavLink>
+                ) : null}
               </div>
             </div>
 
