@@ -15,7 +15,8 @@ export type PageProps<
     role: Role
     permissions: {
       user: {
-        administer: boolean
+        administerStaff: boolean
+        administerMembers: boolean
         deleteSelf: boolean
       }
       book: {

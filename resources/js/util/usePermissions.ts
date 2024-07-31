@@ -4,7 +4,9 @@ import { usePage } from '@inertiajs/react'
 type Authorizable = Record<string, boolean>
 
 export function usePermissions() {
-  const permissions = usePage<PageProps>().props.auth.permissions
+  const auth = usePage<PageProps>().props.auth
+  const permissions = auth.permissions
+  const role = auth.role
 
   function can<T extends Authorizable>(
     ability: keyof T,
@@ -16,5 +18,6 @@ export function usePermissions() {
   return {
     can,
     permissions,
+    role,
   }
 }

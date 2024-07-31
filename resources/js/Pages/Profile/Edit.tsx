@@ -11,17 +11,10 @@ export default function Edit({
   mustVerifyEmail,
   status,
 }: PageProps<{ mustVerifyEmail: boolean; status?: string }>) {
-  const { permissions, can } = usePermissions()
+  const { permissions, can, role } = usePermissions()
 
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      header={
-        <h2 className="text-xl font-semibold leading-tight text-gray-800">
-          Profile
-        </h2>
-      }
-    >
+    <AuthenticatedLayout>
       <Head title="Profile" />
 
       <div className="py-12">
@@ -38,7 +31,7 @@ export default function Edit({
             <UpdatePasswordForm className="max-w-xl" />
           </div>
 
-          {can('deleteSelf', permissions.user) ? (
+          {can('deleteSelf', permissions.user) && role !== 'super-admin' ? (
             <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8">
               <DeleteUserForm className="max-w-xl" />
             </div>

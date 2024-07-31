@@ -4,14 +4,7 @@ import { PageProps } from '@/types'
 
 export default function Index({ auth, users }: PageProps) {
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      header={
-        <h2 className="text-xl font-semibold leading-tight text-gray-800">
-          Users
-        </h2>
-      }
-    >
+    <AuthenticatedLayout>
       <Head title="Users" />
 
       <div className="py-12">

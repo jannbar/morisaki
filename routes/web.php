@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\RolesEnum;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
@@ -26,12 +27,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['can:administer users'])->group(function () {
-    Route::get('/users', function () {
-        return Inertia::render('Users/Index', ['users' => User::all()]);
-    })->name('users.index');
-});
+// Route::middleware('can:administer members')->group(function () {
+//     Route::get('/members', function () {
+//         return Inertia::render('Users/Index', ['users' => User::with('roles')->get()->filter(
+//             fn ($user) => $user->roles->where('name', RolesEnum::MEMBER->value)->toArray()
+//         )]);
+//     })->name('members.index');
+// });
 
-Route::resource('books', BookController::class)->only(['index']);
+// Route::resource('books', BookController::class)->only(['index'])->middleware(['auth']);
 
 require __DIR__.'/auth.php';

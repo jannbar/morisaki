@@ -37,6 +37,12 @@ class PermissionsSeeder extends Seeder
         // Create demo users.
         $faker = $this->getFakerInstance();
 
+        $super_admin_user = User::factory()->create([
+            'name' => $faker->name(),
+            'email' => 'super-admin@morisaki.com',
+        ]);
+        $super_admin_user->assignRole(RolesEnum::SUPER_ADMIN);
+
         $librarian_user = User::factory()->create([
             'name' => $faker->name(),
             'email' => 'librarian@morisaki.com',
@@ -48,12 +54,6 @@ class PermissionsSeeder extends Seeder
             'email' => 'member@morisaki.com',
         ]);
         $member_user->assignRole(RolesEnum::MEMBER);
-
-        $super_admin_user = User::factory()->create([
-            'name' => $faker->name(),
-            'email' => 'super-admin@morisaki.com',
-        ]);
-        $super_admin_user->assignRole(RolesEnum::SUPER_ADMIN);
     }
 
     private function getFakerInstance(): \Faker\Generator

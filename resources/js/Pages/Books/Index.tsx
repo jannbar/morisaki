@@ -1,24 +1,20 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head } from '@inertiajs/react'
 import { PageProps } from '@/types'
+import BookCover from '@/Components/BookCover'
 
-export default function BooksIndex({ auth, books }: PageProps) {
+export default function BooksIndex({ books }: PageProps<{ books: any[] }>) {
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      header={
-        <h2 className="text-xl font-semibold leading-tight text-gray-800">
-          Books
-        </h2>
-      }
-    >
+    <AuthenticatedLayout>
       <Head title="Books" />
 
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-            <div className="p-6 text-gray-900">
-              <pre>{JSON.stringify(books, null, 2)}</pre>
+            <div className="grid grid-cols-5 gap-12 p-6">
+              {books.map((book) => (
+                <BookCover key={book.id} book={book} />
+              ))}
             </div>
           </div>
         </div>
