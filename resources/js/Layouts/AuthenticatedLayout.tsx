@@ -1,4 +1,8 @@
-import { PropsWithChildren, useState } from 'react'
+import ApplicationLogo from '@/Components/ApplicationLogo'
+import { classNames } from '@/util/classNames'
+import { roleEmojis } from '@/util/roleEmoji'
+import { usePermissions } from '@/util/usePermissions'
+import { useUser } from '@/util/useUser'
 import {
   Dialog,
   DialogBackdrop,
@@ -6,34 +10,22 @@ import {
   TransitionChild,
 } from '@headlessui/react'
 import {
+  ArrowPathRoundedSquareIcon,
   Bars3Icon,
+  BookOpenIcon,
+  HandRaisedIcon,
   HomeIcon,
   UsersIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
-import ApplicationLogo from '@/Components/ApplicationLogo'
 import { Link } from '@inertiajs/react'
-import { BookOpenIcon } from '@heroicons/react/24/outline'
-import { HandRaisedIcon } from '@heroicons/react/24/outline'
-import { ArrowPathRoundedSquareIcon } from '@heroicons/react/24/outline'
-import { usePermissions } from '@/util/usePermissions'
-import { useUser } from '@/util/useUser'
+import { PropsWithChildren, useState } from 'react'
 
 const teams = [
   { id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false },
   { id: 2, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
   { id: 3, name: 'Workcation', href: '#', initial: 'W', current: false },
 ]
-
-const roleEmojis: Record<'super-admin' | 'librarian' | 'member', string> = {
-  'super-admin': '⚡',
-  librarian: '🤓',
-  member: '📓',
-}
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
-}
 
 export default function AuthenticatedLayout({ children }: PropsWithChildren) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -42,7 +34,7 @@ export default function AuthenticatedLayout({ children }: PropsWithChildren) {
 
   const navigation = [
     {
-      name: 'Dashboard',
+      name: 'My Library',
       href: route('dashboard'),
       icon: HomeIcon,
       current: route().current('dashboard'),
@@ -181,8 +173,12 @@ export default function AuthenticatedLayout({ children }: PropsWithChildren) {
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
             <div className="flex h-20 shrink-0 items-center">
-              <Link href={route('dashboard')}>
-                <ApplicationLogo className="block h-8 w-auto fill-current text-indigo-600" />
+              <Link
+                href={route('dashboard')}
+                className="flex items-center space-x-2 text-red-500"
+              >
+                <ApplicationLogo className="block h-8 w-auto fill-current" />
+                <span className="font-semibold">morisaki</span>
               </Link>
             </div>
             <nav className="flex flex-1 flex-col">
@@ -241,11 +237,6 @@ export default function AuthenticatedLayout({ children }: PropsWithChildren) {
                     href={route('profile.edit')}
                     className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-stone-900 hover:bg-stone-50"
                   >
-                    {/* <img
-                      alt=""
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                      className="h-8 w-8 rounded-full bg-gray-50"
-                    /> */}
                     <span className="grid size-8 place-items-center rounded-full bg-stone-100">
                       {roleEmojis[role]}
                     </span>
